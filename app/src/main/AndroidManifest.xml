@@ -10,8 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PontoSecurity">
         <activity
-            android:exported="true"
+            android:name=".PassActivity"
+            android:exported="false"
+            android:label="@string/title_activity_pass"
+            android:theme="@style/Theme.PontoSecurity.NoActionBar" />
+        <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PontoSecurity.NoActionBar">
             <intent-filter>
