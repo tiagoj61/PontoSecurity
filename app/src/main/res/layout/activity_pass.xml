@@ -1,34 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PassActivity">
+    android:background="@color/blue_main"
+    tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.PontoSecurity.AppBarOverlay">
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/ic_icon"
+        app:layout_anchorGravity="center" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.PontoSecurity.PopupOverlay" />
+    <ImageView
+        android:id="@+id/device"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/ic_device"
+        app:layout_anchorGravity="center" />
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <include layout="@layout/content_pass" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <TextView
+        android:id="@+id/text_connect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_below="@id/device"
+        android:layout_centerHorizontal="true"
+        android:text="Connect 5"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/text_devices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="devices"
+        android:textColor="@color/white"
+        android:layout_below="@id/text_connect"
+        android:layout_centerHorizontal="true"
+        />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:layout_height="240dp"
+        android:layout_below="@id/text_devices"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        app:cardBackgroundColor="@color/grid_white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
+
+        <Button
+            android:id="@+id/entrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/yellow"
+            android:onClick="openPassActvity"
+            android:text="Entrar"
+            android:textColor="@color/blue_main" />
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

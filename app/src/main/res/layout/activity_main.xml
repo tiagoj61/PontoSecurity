@@ -35,11 +35,11 @@
             android:id="@+id/entrar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/yellow"
-            android:text="Entrar"
-            android:textColor="@color/blue_main"
             android:layout_gravity="center"
-            android:onClick="openPassActvity"/>
+            android:backgroundTint="@color/yellow"
+            android:onClick="openPassActvity"
+            android:text="Entrar"
+            android:textColor="@color/blue_main" />
     </androidx.cardview.widget.CardView>
 
 
