@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_main"
-    tools:context=".MainActivity">
+    tools:context=".PassActivity">
 
     <ImageView
         android:id="@+id/icon"
@@ -32,22 +32,22 @@
         android:layout_below="@id/device"
         android:layout_centerHorizontal="true"
         android:text="Connect 5"
-        android:textSize="16dp"
         android:textColor="@color/white"
+        android:textSize="16dp"
         android:textStyle="bold" />
+
     <TextView
         android:id="@+id/text_devices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="devices"
-        android:textColor="@color/white"
         android:layout_below="@id/text_connect"
         android:layout_centerHorizontal="true"
-        />
+        android:text="devices"
+        android:textColor="@color/white" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="100dp"
-        android:layout_height="240dp"
+        android:layout_height="300dp"
         android:layout_below="@id/text_devices"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
@@ -59,15 +59,14 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp">
 
-        <Button
-            android:id="@+id/entrar"
+        <GridView
+            android:id="@+id/grid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/yellow"
-            android:onClick="openPassActvity"
-            android:text="Entrar"
-            android:textColor="@color/blue_main" />
+            android:numColumns="3"
+
+            tools:listitem="@layout/adapter_numeric_buttons"
+/>
     </androidx.cardview.widget.CardView>
 
 
