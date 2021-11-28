@@ -31,7 +31,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/device"
         android:layout_centerHorizontal="true"
-        android:text="Connect 5"
+        android:text="Connect "
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/totalConnected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/device"
+        android:layout_alignEnd="@id/text_connect"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-9dp"
         android:textColor="@color/white"
         android:textSize="16dp"
         android:textStyle="bold" />
@@ -64,9 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numColumns="3"
-
-            tools:listitem="@layout/adapter_numeric_buttons"
-/>
+            tools:listitem="@layout/adapter_numeric_buttons" />
     </androidx.cardview.widget.CardView>
 
 

@@ -3,12 +3,15 @@ package com.example.pontosecurity;
 import android.os.Bundle;
 
 import com.example.pontosecurity.adapter.NumericButtonAdapter;
+import com.example.pontosecurity.communicate.ComunicateToServer;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -22,30 +25,45 @@ import java.util.List;
 
 public class PassActivity extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
     private ActivityPassBinding binding;
+    private String numerosDaSenha;
+    private int connectedDevices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        numerosDaSenha = "";
+        connectedDevices = 0;
         binding = ActivityPassBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         List<Integer> numeros = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
         NumericButtonAdapter numericButtonAdapter = new NumericButtonAdapter(this, numeros);
         binding.grid.setAdapter(numericButtonAdapter);
+
         binding.grid.setOnItemClickListener((adapterView, view, position, idView) -> {
-            System.out.println(position);
-            System.out.println(numeros.get(position));
+            int clickedNumber = numeros.get(position);
+            numerosDaSenha += String.valueOf(clickedNumber);
+            System.out.println(numerosDaSenha);
+            if (numerosDaSenha.length() == 5)
+                send();
         });
-
-
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_pass);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+
+    public void send() {
+        String msg = "";
+        if (ComunicateToServer.pushPassToServer(numerosDaSenha)) {
+            msg = "Connect";
+            connectedDevices++;
+        } else {
+            msg = "Not Connect";
+            connectedDevices = connectedDevices == 0 ? connectedDevices - 1 : 0;
+        }
+
+        Toast.makeText(this, msg, Toast.LENGTH_LONG);
+        numerosDaSenha = "";
+        changeTextConnectedDevices();
+    }
+    public void changeTextConnectedDevices() {
     }
 }
