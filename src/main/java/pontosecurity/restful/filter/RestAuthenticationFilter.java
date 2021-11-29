@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.HttpHeaders;
 
 import io.jsonwebtoken.Jwts;
-import pontosecurity.util.Constants;
 
 public class RestAuthenticationFilter implements Filter {
 	public static final String AUTHENTICATION_HEADER = "Authorization";
@@ -28,7 +27,7 @@ public class RestAuthenticationFilter implements Filter {
 
 			try {
 				var token = authorizationHeader.substring("Bearer".length()).trim();
-				Jwts.parserBuilder().setSigningKey(Constants.CHAVE).build().parseClaimsJws(token);
+				Jwts.parserBuilder().build().parseClaimsJws(token);
 				filter.doFilter(request, response);
 			} catch (Exception e) {
 				if (response instanceof HttpServletResponse) {

@@ -21,7 +21,6 @@ import io.jsonwebtoken.Jwts;
 import pontosecurity.bean.Usuario;
 import pontosecurity.bo.IUsuarioBo;
 import pontosecurity.exception.LoginExpiradoException;
-import pontosecurity.util.Constants;
 import pontosecurity.util.JsonReturn;
 
 @ParentPackage("json-default")
@@ -52,7 +51,6 @@ public abstract class GenericAction extends ActionSupport implements Preparable,
                 try {
                     var token = authorizationHeader.substring("Bearer".length()).trim();
                     Jwts.parserBuilder()
-                            .setSigningKey(Constants.CHAVE)
                             .build()
                             .parseClaimsJws(token);
 

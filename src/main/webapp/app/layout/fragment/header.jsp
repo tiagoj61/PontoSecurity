@@ -1,10 +1,6 @@
 <%
 
     HttpSession sessao = request.getSession();
-    if (sessao.getAttribute("logged") == null) {
-        response.sendRedirect("../home/login.jsp");
-        out.print("<script>window.location = '../home/login.jsp';</script>");
-    }
 
 %>
 <%@taglib prefix="s" uri="/struts-tags"%>

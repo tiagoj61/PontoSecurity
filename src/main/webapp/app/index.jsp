@@ -1,10 +1,5 @@
+
 <%
-
-    HttpSession sessao = request.getSession();
-    if (sessao.getAttribute("logged") == null) {
-        response.sendRedirect("home/login.jsp");
-    } else {
-        response.sendRedirect("home/dashboard");
-    }
-
+HttpSession sessao = request.getSession();
+response.sendRedirect("usuario/index.jsp");
 %>
