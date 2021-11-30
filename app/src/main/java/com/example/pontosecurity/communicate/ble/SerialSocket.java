@@ -15,6 +15,8 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.util.Log;
 
+import com.example.pontosecurity.R;
+
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.UUID;
  *   - connect, disconnect and write as methods,
  *   - read + status is returned by SerialListener
  */
-class SerialSocket extends BluetoothGattCallback {
+public class SerialSocket extends BluetoothGattCallback {
 
     /**
      * delegate device specific behaviour to inner class
@@ -79,8 +81,7 @@ class SerialSocket extends BluetoothGattCallback {
     private boolean connected;
     private int payloadSize = DEFAULT_MTU-3;
 
-    SerialSocket(BroadcastReceiver disconnectBroadcastReceiver, Context context, BluetoothDevice device) {
-        this.disconnectBroadcastReceiver = disconnectBroadcastReceiver;
+    public SerialSocket(Context context, BluetoothDevice device) {
         if(context instanceof Activity)
             throw new InvalidParameterException("expected non UI context");
         this.context = context;
@@ -95,7 +96,14 @@ class SerialSocket extends BluetoothGattCallback {
                 onPairingBroadcastReceive(context, intent);
             }
         };
-
+        disconnectBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(listener != null)
+                    listener.onSerialIoError(new IOException("background disconnect"));
+                disconnect(); // disconnect now, else would be queued until UI re-attached
+            }
+        };
     }
 
     String getName() {
@@ -137,12 +145,12 @@ class SerialSocket extends BluetoothGattCallback {
 
     /**
      * connect-success and most connect-errors are returned asynchronously to listener
-     * @param serialService
      */
-    void connect(SerialService serialService) throws IOException {
+    void connect(SerialListener listener) throws IOException {
         if(connected || gatt != null)
             throw new IOException("already connected");
         canceled = false;
+        this.listener = listener;
         context.registerReceiver(disconnectBroadcastReceiver, new IntentFilter(Constants.INTENT_ACTION_DISCONNECT));
         Log.d(TAG, "connect "+device);
         context.registerReceiver(pairingBroadcastReceiver, pairingIntentFilter);

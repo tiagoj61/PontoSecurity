@@ -3,6 +3,7 @@ package com.example.pontosecurity;
 import android.os.Bundle;
 
 import com.example.pontosecurity.adapter.NumericButtonAdapter;
+import com.example.pontosecurity.communicate.ComunicateToArduino;
 import com.example.pontosecurity.communicate.ComunicateToServer;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,6 +21,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.pontosecurity.databinding.ActivityPassBinding;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,17 +46,23 @@ public class PassActivity extends AppCompatActivity {
             int clickedNumber = numeros.get(position);
             numerosDaSenha += String.valueOf(clickedNumber);
             System.out.println(numerosDaSenha);
-            if (numerosDaSenha.length() == 5)
-                send();
+            if (numerosDaSenha.length() == 5) {
+                try {
+                    send();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
     }
 
 
-    public void send() {
+    public void send() throws IOException {
         String msg = "";
         if (ComunicateToServer.pushPassToServer(numerosDaSenha)) {
             msg = "Connect";
             connectedDevices++;
+            ComunicateToArduino.sendAlertToBLE(this);
         } else {
             msg = "Not Connect";
             connectedDevices = connectedDevices == 0 ? connectedDevices - 1 : 0;
