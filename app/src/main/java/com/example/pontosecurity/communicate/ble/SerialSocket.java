@@ -82,6 +82,7 @@ public class SerialSocket extends BluetoothGattCallback {
     private int payloadSize = DEFAULT_MTU-3;
 
     public SerialSocket(Context context, BluetoothDevice device) {
+        System.out.println(context.toString());
         if(context instanceof Activity)
             throw new InvalidParameterException("expected non UI context");
         this.context = context;
@@ -209,6 +210,7 @@ public class SerialSocket extends BluetoothGattCallback {
 
     @Override
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+
         Log.d(TAG, "servicesDiscovered, status " + status);
         if (canceled)
             return;
@@ -218,7 +220,9 @@ public class SerialSocket extends BluetoothGattCallback {
     private void connectCharacteristics1(BluetoothGatt gatt) {
         boolean sync = true;
         writePending = false;
+        System.out.printf("entrou aqui");
         for (BluetoothGattService gattService : gatt.getServices()) {
+            System.out.println(gattService.getUuid());
             if (gattService.getUuid().equals(BLUETOOTH_LE_CC254X_SERVICE))
                 delegate = new Cc245XDelegate();
             if (gattService.getUuid().equals(BLUETOOTH_LE_RN4870_SERVICE))
@@ -343,6 +347,9 @@ public class SerialSocket extends BluetoothGattCallback {
      * write
      */
     void write(byte[] data) throws IOException {
+        System.out.println(canceled);
+        System.out.println(connected);
+        System.out.println(writeCharacteristic);
         if(canceled || !connected || writeCharacteristic == null)
             throw new IOException("not connected");
         byte[] data0;

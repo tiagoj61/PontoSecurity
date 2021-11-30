@@ -1,7 +1,9 @@
 package com.example.pontosecurity.communicate;
 
 
-import org.apache.commons.io.IOUtils;
+import com.example.pontosecurity.callback.IFutureCallback;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.IOUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,14 +16,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Year;
 
-public class ComunicateToServer {
-    public static boolean pushPassToServer(String senha){
+public class ComunicateToServer extends Thread {
+    private IFutureCallback callback;
 
-
-        return true;
+    public void onFutureCallback(IFutureCallback callback) {
+        this.callback = callback;
     }
 
-    private void doPost(){
+    @Override
+    public void run() {
+
+
         HttpURLConnection connection = null;
         try {
             URL url = new URL("");
@@ -65,7 +70,10 @@ public class ComunicateToServer {
             System.out.println("Response code S3 Files Origins: " + statusCode);
 
             in.close();
+            callback.onSuccess();
         } catch (IOException | JSONException e) {
+
+            callback.onError(e);
             e.printStackTrace();
         } finally {
             if (connection != null) {
