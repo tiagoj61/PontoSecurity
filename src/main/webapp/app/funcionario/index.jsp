@@ -38,7 +38,7 @@
                                 <td>${email}</td>
                                 <td><s:date name="ultimoAcesso" nice="true" /></td>
                                 <td>${tipoFuncionario.getName()}</td>
-                                <td class="text-center"><i class="${ativo ? 'far fa-check-circle text-success' : 'fas fa-times text-danger'}"></i></td>
+                                <td>${logado}</td>
                                 <td class="text-right">
                                     <button type="button" class="btn btn-outline-primary btn-xs" onclick="window.location.href = 'prepareFuncionario?funcionario.id=${id}'">
                                         <i class="fas fa-edit"></i> editar

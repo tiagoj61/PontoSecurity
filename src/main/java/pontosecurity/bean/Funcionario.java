@@ -36,6 +36,7 @@ public class Funcionario implements Serializable {
 	private Date ultimoAcesso;
 	@Column(length = 32)
 	private String hash;
+	private boolean logado;
 	private boolean ativo;
 
 	public Funcionario() {
@@ -105,4 +106,13 @@ public class Funcionario implements Serializable {
 	public boolean checkSenha(String senha) {
 		return BCrypt.checkpw(senha, this.senha);
 	}
+
+	public boolean isLogado() {
+		return logado;
+	}
+
+	public void setLogado(boolean logado) {
+		this.logado = logado;
+	}
+	
 }

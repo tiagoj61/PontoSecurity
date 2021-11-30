@@ -37,7 +37,6 @@ public class FuncionarioAction extends GenericAction {
             })
     public String preparar() {
         try {
-            isLogged(request);
             if (this.funcionario != null && this.funcionario.getId() != null) {
                 this.funcionario = this.funcionarioBo.load(this.funcionario.getId());
             }
@@ -58,7 +57,6 @@ public class FuncionarioAction extends GenericAction {
             })
     public String persist() {
         try {
-            isLogged(request);
             this.funcionarioBo.persist(funcionario);
 
             addActionMessage("Registro salvo com sucesso.");
@@ -79,7 +77,6 @@ public class FuncionarioAction extends GenericAction {
             })
     public String delete() {
         try {
-            isLogged(request);
             funcionarioBo.delete(funcionario.getId());
             addActionMessage("Registro deletado com sucesso.");
             setRedirectURL("listFuncionario");
@@ -102,7 +99,6 @@ public class FuncionarioAction extends GenericAction {
             })
     public String list() {
         try {
-            isLogged(request);
             funcionarios = funcionarioBo.listall();
             return SUCCESS;
         } catch (Exception e) {
@@ -112,39 +108,6 @@ public class FuncionarioAction extends GenericAction {
         }
     }
 
-    @Action(value = "logout",
-            interceptorRefs = {
-                @InterceptorRef(value = "basicStack")},
-            results = {
-                @Result(name = SUCCESS, location = "/app/home/login.jsp")
-            })
-    public String logout() {
-        try {
-            Funcionario entity = this.funcionarioBo.load(getLogged().getId());
-            entity.setHash(null);
-            this.funcionarioBo.persist(entity);
-        } catch (Exception e) {
-            System.out.println("Erro ao tentar apagar o HASH do usuário que foi deslogado");
-        }
-
-        Map session = ActionContext.getContext().getSession();
-        session.remove("logged");
-
-        Cookie[] biscoitos = request.getCookies();
-        if (biscoitos != null) {
-            Cookie wafe;
-            for (Cookie biscoito : biscoitos) {
-                wafe = biscoito;
-                wafe.setPath("/");
-                if (wafe.getName().equals("uid")) {
-                    wafe.setMaxAge(0);
-                    response.addCookie(wafe);
-                }
-            }
-        }
-
-        return SUCCESS;
-    }
 
 
     @JSON(serialize = false)
