@@ -11,7 +11,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="author" content="Audax App" />
-        <title>Torke</title>
+        <title>Ponto security</title>
 
         <link rel="icon" type="image/png" sizes="16x16" href="../layout/img/icon/favicon.svg">
 

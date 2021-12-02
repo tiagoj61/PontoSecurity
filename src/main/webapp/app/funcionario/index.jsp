@@ -24,10 +24,8 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>Login</th>
-                            <th>&Uacute;ltimo Acesso</th>
-                            <th>N&iacute;vel</th>
-                            <th class="text-center">Ativo</th>
+                            <th>Email</th>
+                            <th class="text-center">Logado</th>
                             <th class="text-right" style="width: 172px">A&ccedil;&otilde;es</th>
                         </tr>
                     </thead>
@@ -36,9 +34,7 @@
                             <tr>
                                 <td>${nome}</td>
                                 <td>${email}</td>
-                                <td><s:date name="ultimoAcesso" nice="true" /></td>
-                                <td>${tipoFuncionario.getName()}</td>
-                                <td>${logado}</td>
+                                <td class="text-center">${logado}</td>
                                 <td class="text-right">
                                     <button type="button" class="btn btn-outline-primary btn-xs" onclick="window.location.href = 'prepareFuncionario?funcionario.id=${id}'">
                                         <i class="fas fa-edit"></i> editar

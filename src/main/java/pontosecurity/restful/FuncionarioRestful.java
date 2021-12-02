@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import pontosecurity.bean.Funcionario;
 import pontosecurity.bo.IFuncionarioBo;
+import pontosecurity.restful.dto.FuncionarioDto;
 
 @Component
 @Path("/funcionario")
@@ -24,9 +25,13 @@ public class FuncionarioRestful {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(Funcionario funcionario) {
+	public Response login(FuncionarioDto funcionarioDto) {
 		try {
-			return Response.status(Response.Status.FORBIDDEN).build();
+			Funcionario funcionario = funcionarioBo.loadByCodigo(funcionarioDto.getCodigo());
+			if (funcionario == null)
+				return Response.status(Response.Status.FORBIDDEN).entity("CodeErro").build();
+			funcionarioBo.storesDevicesByCode(funcionarioDto.getEnderecoMacDevices(), funcionario);
+			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
@@ -37,9 +42,15 @@ public class FuncionarioRestful {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response logout(Funcionario funcionario) {
+	public Response logout(FuncionarioDto funcionarioDto) {
 		try {
-			return Response.status(Response.Status.FORBIDDEN).build();
+			Funcionario funcionario = funcionarioBo.loadByCodigo(funcionarioDto.getCodigo());
+			if (funcionario == null)
+				return Response.status(Response.Status.FORBIDDEN).entity("CodeErro").build();
+			if(funcionarioBo.checkDevices(funcionarioDto.getEnderecoMacDevices(), funcionario))
+				return Response.status(Response.Status.CONFLICT).build();
+			funcionarioBo.removeDevicesByCode(funcionarioDto.getEnderecoMacDevices(), funcionario);
+			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
