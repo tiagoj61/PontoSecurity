@@ -22,7 +22,7 @@
             <div class="table-responsive">
                 <table class="table table-striped table-advance table-hover">
                     <thead>
-                        <tr>
+                        <tr>	
                             <th>Nome</th>
                             <th>Email</th>
                             <th class="text-center">Logado</th>
