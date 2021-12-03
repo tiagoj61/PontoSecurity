@@ -15,12 +15,16 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComunicateToServer extends Thread {
     private IFutureCallback callback;
+    private List<String> macs ;
 
-    public void onFutureCallback(IFutureCallback callback) {
+    public void onFutureCallback(IFutureCallback callback, List<String> macs) {
         this.callback = callback;
+        this.macs = macs;
     }
 
     @Override

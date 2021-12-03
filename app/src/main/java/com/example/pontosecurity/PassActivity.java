@@ -1,6 +1,9 @@
 package com.example.pontosecurity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 
 import com.example.pontosecurity.adapter.NumericButtonAdapter;
@@ -13,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,18 +28,25 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.pontosecurity.databinding.ActivityPassBinding;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class PassActivity extends AppCompatActivity {
 
     private ActivityPassBinding binding;
     private String numerosDaSenha;
     private int connectedDevices;
+    private BluetoothAdapter mBluetoothAdapter;
+    private String msg;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
         numerosDaSenha = "";
         connectedDevices = 0;
         binding = ActivityPassBinding.inflate(getLayoutInflater());
@@ -53,7 +64,7 @@ public class PassActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }else if(numerosDaSenha.length() >5){
+            } else if (numerosDaSenha.length() > 5) {
                 ComunicateToArduino.send("1");
             }
         });
@@ -61,38 +72,33 @@ public class PassActivity extends AppCompatActivity {
 
 
     public void send() throws IOException {
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+        List<String> macs = new ArrayList<>();
+        for (BluetoothDevice bt : pairedDevices)
+            macs.add(bt.getAddress());
         ComunicateToArduino.sendAlertToBLE(this.getApplicationContext());
         ComunicateToServer threadICPGetACs = new ComunicateToServer();
         threadICPGetACs.onFutureCallback(new IFutureCallback() {
             @Override
             public void onSuccess() {
-                System.out.println("sc");
+                msg = "Connect";
+                connectedDevices++;
+                numerosDaSenha = "";
+                changeTextConnectedDevices();
             }
-
             @Override
             public void onError(Exception exception) {
-                System.out.println("erro");
-
-
+                msg = "Not Connect";
+                connectedDevices = connectedDevices == 0 ? connectedDevices - 1 : 0;
+                changeTextConnectedDevices();
             }
-
-        });
-
+        }, macs);
         threadICPGetACs.start();
-        String msg = "";
-//        if (ComunicateToServer.pushPassToServer(numerosDaSenha)) {
-//            msg = "Connect";
-//            connectedDevices++;
-//            ComunicateToArduino.sendAlertToBLE(this);
-//        } else {
-//            msg = "Not Connect";
-//            connectedDevices = connectedDevices == 0 ? connectedDevices - 1 : 0;
-//        }
-
-        Toast.makeText(this, msg, Toast.LENGTH_LONG);
-        //numerosDaSenha = "";
-        changeTextConnectedDevices();
     }
+
     public void changeTextConnectedDevices() {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG);
+        binding.textConnect.setText(connectedDevices);
     }
 }
